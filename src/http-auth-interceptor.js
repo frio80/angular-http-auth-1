@@ -33,6 +33,14 @@
       loginCancelled: function(data, reason) {
         httpBuffer.rejectAll(reason);
         $rootScope.$broadcast('event:auth-loginCancelled', data);
+      },
+
+      /**
+       * Call this function to make a function onto every object in the httpBuffer
+       * This allows us to modify the requests
+       */
+      transformRequests: function(func) {
+          httpBuffer.transform(func);
       }
     };
   }])
@@ -91,6 +99,13 @@
           config: config,
           deferred: deferred
         });
+      },
+
+      /**
+       * Apply a function to every call in the buffer array
+       */
+      transform: function(func) {
+        buffer = buffer.map(func);
       },
 
       /**
